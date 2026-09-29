@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON CASINO</title>
+
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+--green: #39ff88;
+--dark-green: #0aff68;
+--bg: #050806;
+--panel: #0b110d;
+--panel2: #101812;
+--border: rgba(57,255,136,.15);
+--text: #f2fff6;
+--muted: #789081;
+}
+
+body {
+background:
+radial-gradient(circle at 70% 10%, rgba(20,255,100,.09), transparent 30%),
+radial-gradient(circle at 20% 80%, rgba(20,255,100,.05), transparent 30%),
+var(--bg);
+color: var(--text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+position: fixed;
+left: 15px;
+top: 15px;
+bottom: 15px;
+width: 68px;
+background: rgba(8,14,10,.9);
+border: 1px solid var(--border);
+border-radius: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 14px 0;
+z-index: 100;
+backdrop-filter: blur(15px);
+box-shadow: 0 0 30px rgba(0,255,100,.05);
+}
+
+.logo {
+width: 42px;
+height: 42px;
+border-radius: 13px;
+background: var(--green);
+color: #031006;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+font-weight: 900;
+margin-bottom: 25px;
+box-shadow: 0 0 25px rgba(57,255,136,.3);
+}
+
+.nav {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.nav button,
+.bottom button {
+width: 44px;
+height: 44px;
+border: 0;
+background: transparent;
+color: #718078;
+border-radius: 13px;
+font-size: 20px;
+cursor: pointer;
+transition: .2s;
+position: relative;
+}
+
+.nav button:hover,
+.bottom button:hover,
+.nav button.active {
+color: var(--green);
+background: rgba(57,255,136,.1);
+box-shadow: inset 0 0 15px rgba(57,255,136,.04);
+}
+
+.nav button::after,
+.bottom button::after {
+content: attr(data-tip);
+position: absolute;
+left: 55px;
+top: 50%;
+transform: translateY(-50%);
+background: #111914;
+color: white;
+padding: 7px 10px;
+border-radius: 7px;
+font-size: 12px;
+white-space: nowrap;
+opacity: 0;
+pointer-events: none;
+transition: .2s;
+border: 1px solid var(--border);
+}
+
+.nav button:hover::after,
+.bottom button:hover::after {
+opacity: 1;
+}
+
+.bottom {
+margin-top: auto;
+}
+
+/* MAIN */
+
+main {
+margin-left: 105px;
+padding: 35px 35px 50px;
+max-width: 1500px;
+}
+
+/* TOP */
+
+.topbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 35px;
+}
+
+.brand h1 {
+font-size: 26px;
+letter-spacing: 2px;
+}
+
+.brand span {
+color: var(--green);
+}
+
+.status {
+display: flex;
+align-items: center;
+gap: 8px;
+color: #9eada4;
+font-size: 13px;
+}
+
+.dot {
+width: 8px;
+height: 8px;
+background: var(--green);
+border-radius: 50%;
+box-shadow: 0 0 12px var(--green);
+}
+
+/* SECTIONS */
+
+.section {
+display: none;
+animation: fade .3s ease;
+}
+
+.section.active {
+display: block;
+}
+
+@keyframes fade {
+from {
+opacity: 0;
+transform: translateY(8px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+/* HERO */
+
+.hero {
+border: 1px solid var(--border);
+border-radius: 25px;
+padding: 45px;
+background:
+linear-gradient(135deg, rgba(57,255,136,.08), rgba(5,8,6,.7)),
+var(--panel);
+position: relative;
+overflow: hidden;
+margin-bottom: 30px;
+}
+
+.hero::before {
+content: "";
+position: absolute;
+width: 300px;
+height: 300px;
+background: var(--green);
+filter: blur(150px);
+opacity: .08;
+right: -100px;
+top: -100px;
+}
+
+.hero h2 {
+font-size: clamp(35px, 5vw, 65px);
+line-height: 1;
+margin-bottom: 15px;
+}
+
+.hero h2 span {
+color: var(--green);
+text-shadow: 0 0 25px rgba(57,255,136,.3);
+}
+
+.hero p {
+color: var(--muted);
+max-width: 600px;
+line-height: 1.7;
+}
+
+/* TITLES */
+
+.section-title {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 18px;
+}
+
+.section-title h2 {
+font-size: 21px;
+}
+
+.section-title span {
+color: var(--green);
+font-size: 13px;
+}
+
+/* GIVEAWAYS */
+
+.cards {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 18px;
+}
+
+.card {
+background: linear-gradient(145deg, #0d1510, #080d09);
+border: 1px solid var(--border);
+border-radius: 20px;
+padding: 22px;
+transition: .25s;
+}
+
+.card:hover {
+transform: translateY(-5px);
+border-color: rgba(57,255,136,.4);
+box-shadow: 0 12px 35px rgba(0,0,0,.3);
+}
+
+.prize {
+height: 135px;
+border-radius: 15px;
+background:
+radial-gradient(circle, rgba(57,255,136,.16), transparent 55%),
+#070b08;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 55px;
+margin-bottom: 18px;
+}
+
+.card h3 {
+margin-bottom: 8px;
+}
+
+.card p {
+color: var(--muted);
+font-size: 13px;
+margin-bottom: 18px;
+}
+
+.info {
+display: flex;
+justify-content: space-between;
+color: #89978e;
+font-size: 12px;
+margin-bottom: 15px;
+}
+
+.enter {
+width: 100%;
+padding: 12px;
+border: 0;
+border-radius: 10px;
+background: var(--green);
+color: #041108;
+font-weight: 800;
+cursor: pointer;
+transition: .2s;
+}
+
+.enter:hover {
+box-shadow: 0 0 20px rgba(57,255,136,.25);
+transform: scale(1.02);
+}
+
+/* WINNERS */
+
+.winner {
+display: flex;
+align-items: center;
+gap: 15px;
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 16px;
+padding: 15px;
+}
+
+.avatar {
+width: 45px;
+height: 45px;
+border-radius: 13px;
+background: rgba(57,255,136,.12);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--green);
+font-weight: bold;
+}
+
+.winner-info {
+flex: 1;
+}
+
+.winner-info strong {
+display: block;
+margin-bottom: 4px;
+}
+
+.winner-info small {
+color: var(--muted);
+}
+
+.winner-prize {
+color: var(--green);
+font-size: 13px;
+font-weight: bold;
+}
+
+/* COMMUNITY */
+
+.community {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: 20px;
+}
+
+.panel {
+background: var(--panel);
+border: 1px solid var(--border);
+border-radius: 20px;
+padding: 25px;
+}
+
+.panel h2 {
+margin-bottom: 10px;
+}
+
+.panel p {
+color: var(--muted);
+line-height: 1.6;
+}
+
+.discord {
+margin-top: 20px;
+display: inline-block;
+padding: 12px 20px;
+background: var(--green);
+color: #041108;
+border-radius: 10px;
+text-decoration: none;
+font-weight: bold;
+}
+
+/* STATS */
+
+.stats {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+margin-bottom: 30px;
+}
+
+.stat {
+background: var(--panel);
+border: 1px solid var(--border);
+padding: 20px;
+border-radius: 17px;
+}
+
+.stat small {
+color: var(--muted);
+}
+
+.stat h2 {
+margin-top: 7px;
+color: var(--green);
+}
+
+/* FOOTER */
+
+footer {
+text-align: center;
+color: #536058;
+font-size: 12px;
+padding: 40px 0 10px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+.sidebar {
+top: auto;
+bottom: 10px;
+left: 50%;
+transform: translateX(-50%);
+width: calc(100% - 25px);
+height: 62px;
+flex-direction: row;
+justify-content: center;
+padding: 7px;
+border-radius: 18px;
+}
+
+.logo {
+display: none;
+}
+
+.nav {
+flex-direction: row;
+gap: 4px;
+}
+
+.nav button,
+.bottom button {
+width: 43px;
+height: 43px;
+}
+
+.bottom {
+margin-top: 0;
+margin-left: 5px;
+}
+
+.nav button::after,
+.bottom button::after {
+display: none;
+}
+
+main {
+margin-left: 0;
+padding: 22px 15px 100px;
+}
+
+.topbar {
+margin-bottom: 22px;
+}
+
+.hero {
+padding: 28px;
+}
+
+.stats {
+grid-template-columns: 1fr;
+}
+
+.community {
+grid-template-columns: 1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="logo">N</div>
+
+<div class="nav">
+
+<button class="active" data-section="home" data-tip="Home">⌂</button>
+
+<button data-section="giveaways" data-tip="Giveaways">🎁</button>
+
+<button data-section="winners" data-tip="Winners">🏆</button>
+
+<button data-section="community" data-tip="Community">♟</button>
+
+<button data-section="history" data-tip="History">◷</button>
+
+</div>
+
+<div class="bottom">
+
+<button data-section="settings" data-tip="Settings">⚙</button>
+
+</div>
+
+</aside>
+
+
+<main>
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+<div class="brand">
+<h1>NEON <span>CASINO</span></h1>
+</div>
+
+<div class="status">
+<div class="dot"></div>
+Online
+</div>
+
+</div>
+
+
+<!-- HOME -->
+
+<section id="home" class="section active">
+
+<div class="hero">
+
+<h2>WELCOME TO<br><span>NEON</span></h2>
+
+<p>
+Welcome to the community. Discover active giveaways,
+check recent winners, and join the community.
+</p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>Active Giveaways</small>
+<h2>3</h2>
+</div>
+
+<div class="stat">
+<small>Community Members</small>
+<h2>1,284</h2>
+</div>
+
+<div class="stat">
+<small>Winners</small>
+<h2>247</h2>
+</div>
+
+</div>
+
+<div class="section-title">
+<h2>Featured Giveaways</h2>
+<span>View all →</span>
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<div class="prize">🎮</div>
+
+<h3>Roblox Gift Card</h3>
+
+<p>Enter for a chance to win.</p>
+
+<div class="info">
+<span>142 entries</span>
+<span>2d left</span>
+</div>
+
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER GIVEAWAY
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="prize">💎</div>
+
+<h3>Pet Sim Prize</h3>
+
+<p>Special community giveaway.</p>
+
+<div class="info">
+<span>89 entries</span>
+<span>4d left</span>
+</div>
+
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER GIVEAWAY
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="prize">🎁</div>
+
+<h3>Mystery Prize</h3>
+
+<p>A surprise prize for one winner.</p>
+
+<div class="info">
+<span>216 entries</span>
+<span>6d left</span>
+</div>
+
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER GIVEAWAY
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- GIVEAWAYS -->
+
+<section id="giveaways" class="section">
+
+<div class="section-title">
+<h2>Active Giveaways</h2>
+<span>3 active</span>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="prize">🎮</div>
+<h3>Roblox Gift Card</h3>
+<p>Community giveaway.</p>
+<div class="info">
+<span>142 entries</span>
+<span>2d left</span>
+</div>
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER
+</button>
+</div>
+
+<div class="card">
+<div class="prize">💎</div>
+<h3>Pet Sim Prize</h3>
+<p>Special community reward.</p>
+<div class="info">
+<span>89 entries</span>
+<span>4d left</span>
+</div>
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER
+</button>
+</div>
+
+<div class="card">
+<div class="prize">🎁</div>
+<h3>Mystery Prize</h3>
+<p>One community winner.</p>
+<div class="info">
+<span>216 entries</span>
+<span>6d left</span>
+</div>
+<button class="enter" onclick="enterGiveaway(this)">
+ENTER
+</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- WINNERS -->
+
+<section id="winners" class="section">
+
+<div class="section-title">
+<h2>Recent Winners</h2>
+</div>
+
+<div class="cards">
+
+<div class="winner">
+<div class="avatar">A</div>
+
+<div class="winner-info">
+<strong>Anonymous</strong>
+<small>Recently won</small>
+</div>
+
+<div class="winner-prize">
+Gift Card
+</div>
+</div>
+
+<div class="winner">
+<div class="avatar">R</div>
+
+<div class="winner-info">
+<strong>Anonymous</strong>
+<small>Recently won</small>
+</div>
+
+<div class="winner-prize">
+Pet Sim Prize
+</div>
+</div>
+
+<div class="winner">
+<div class="avatar">J</div>
+
+<div class="winner-info">
+<strong>Anonymous</strong>
+<small>Recently won</small>
+</div>
+
+<div class="winner-prize">
+Roblox Prize
+</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- COMMUNITY -->
+
+<section id="community" class="section">
+
+<div class="community">
+
+<div class="panel">
+
+<h2>Community</h2>
+
+<p>
+Join the community to hear about new giveaways,
+announcements, events, and winners.
+</p>
+
+<a class="discord" href="#" onclick="alert('Add your Discord invite link here!')">
+JOIN COMMUNITY
+</a>
+
+</div>
+
+<div class="panel">
+
+<h2>Online</h2>
+
+<p>
+The community is currently online.
+</p>
+
+<br>
+
+<strong style="color:#39ff88;">
+● 1,284 members
+</strong>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section id="history" class="section">
+
+<div class="section-title">
+<h2>Giveaway History</h2>
+</div>
+
+<div class="cards">
+
+<div class="winner">
+<div class="avatar">✓</div>
+
+<div class="winner-info">
+<strong>Roblox Gift Card</strong>
+<small>Completed recently</small>
+</div>
+
+<div class="winner-prize">
+Completed
+</div>
+</div>
+
+<div class="winner">
+<div class="avatar">✓</div>
+
+<div class="winner-info">
+<strong>Pet Sim Prize</strong>
+<small>Completed recently</small>
+</div>
+
+<div class="winner-prize">
+Completed
+</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="section">
+
+<div class="panel">
+
+<h2>Settings</h2>
+
+<p>
+Your account and website settings will appear here.
+</p>
+
+</div>
+
+</section>
+
+
+<footer>
+NEON CASINO © 2026
+</footer>
+
+</main>
+
+
+<script>
+
+/* SIDEBAR NAVIGATION */
+
+const buttons = document.querySelectorAll(
+".nav button, .bottom button"
+);
+
+const sections = document.querySelectorAll(".section");
+
+buttons.forEach(button => {
+
+button.addEventListener("click", () => {
+
+const target = button.dataset.section;
+
+buttons.forEach(b => b.classList.remove("active"));
+
+button.classList.add("active");
+
+sections.forEach(section => {
+section.classList.remove("active");
+});
+
+document
+.getElementById(target)
+.classList.add("active");
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+
+});
+
+});
+
+
+/* GIVEAWAY BUTTON */
+
+function enterGiveaway(button) {
+
+if (button.dataset.entered === "true") {
+return;
+}
+
+button.dataset.entered = "true";
+
+button.innerText = "✓ ENTERED";
+
+button.style.background = "#15251a";
+button.style.color = "#39ff88";
+
+}
+
+</script>
+
+</body>
+</html>
